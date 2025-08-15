@@ -1,5 +1,5 @@
 // Configuration - REMPLACEZ PAR VOTRE URL WEBHOOK N8N
-const WEBHOOK_URL = 'https://votre-n8n-instance.com/webhook/notes-frais';
+const WEBHOOK_URL = 'https://n8n.srv910637.hstgr.cloud/webhook-test/notes-frais';
 
 // Variables globales
 let selectedFile = null;
