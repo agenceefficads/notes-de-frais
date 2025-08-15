@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes de Frais Express - Cabinet Comptable</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 Notes de Frais Express</h1>
+            <p>Soumission rapide et traitement automatique</p>
+        </div>
+        
+        <form id="notesForm" class="form-section">
+            <!-- Section Employé -->
+            <div class="section">
+                <h2>👤 Informations Employé</h2>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="employe_prenom">Prénom *</label>
+                        <input type="text" id="employe_prenom" name="employe_prenom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="employe_nom">Nom *</label>
+                        <input type="text" id="employe_nom" name="employe_nom" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="employe_email">Email *</label>
+                        <input type="email" id="employe_email" name="employe_email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="employe_service">Service</label>
+                        <select id="employe_service" name="employe_service">
+                            <option value="Comptabilité">Comptabilité</option>
+                            <option value="Commercial">Commercial</option>
+                            <option value="Direction">Direction</option>
+                            <option value="Administration">Administration</option>
+                            <option value="IT">IT</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Note de Frais -->
+            <div class="section">
+                <h2>💰 Détails de la Note</h2>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="date_frais">Date des frais *</label>
+                        <input type="date" id="date_frais" name="date_frais" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="type_frais">Type de frais *</label>
+                        <select id="type_frais" name="type_frais" required>
+                            <option value="">Sélectionner...</option>
+                            <option value="Transport">Transport</option>
+                            <option value="Repas">Repas</option>
+                            <option value="Hébergement">Hébergement</option>
+                            <option value="Matériel">Matériel / Fournitures</option>
+                            <option value="Formation">Formation</option>
+                            <option value="Télécommunications">Télécommunications</option>
+                            <option value="Carburant">Carburant</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description *</label>
+                    <textarea id="description" name="description" rows="3" placeholder="Décrivez la nature des frais..." required></textarea>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label for="montant_ttc">Montant TTC (€) *</label>
+                        <input type="number" id="montant_ttc" name="montant_ttc" step="0.01" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="montant_ht">Montant HT (€)</label>
+                        <input type="number" id="montant_ht" name="montant_ht" step="0.01" min="0" placeholder="Calculé automatiquement">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Complémentaires -->
+            <div class="section">
+                <h2>📋 Informations Complémentaires</h2>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="fournisseur">Fournisseur</label>
+                        <input type="text" id="fournisseur" name="fournisseur" placeholder="Nom du fournisseur">
+                    </div>
+                    <div class="form-group">
+                        <label for="numero_facture">N° Facture</label>
+                        <input type="text" id="numero_facture" name="numero_facture" placeholder="Numéro de facture">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Justificatif -->
+            <div class="section">
+                <h2>📎 Justificatif</h2>
+                <div class="form-group">
+                    <div class="file-upload" id="fileDropZone">
+                        <div class="upload-content">
+                            <div class="upload-icon">📎</div>
+                            <p class="upload-text">Glissez votre justificatif ici ou cliquez pour sélectionner</p>
+                            <p class="upload-formats">PDF, JPG, PNG (max 10MB)</p>
+                            <input type="file" id="justificatif" name="justificatif" accept=".pdf,.jpg,.jpeg,.png" style="display: none;">
+                            <button type="button" class="upload-btn" onclick="document.getElementById('justificatif').click()">
+                                Choisir un fichier
+                            </button>
+                        </div>
+                        <div id="filePreview" style="display: none;">
+                            <div class="file-info">
+                                <span class="file-name" id="fileName"></span>
+                                <span class="file-size" id="fileSize"></span>
+                                <button type="button" class="remove-file" onclick="removeFile()">❌</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bouton Submit -->
+            <div class="submit-section">
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span class="btn-text">🚀 Soumettre la Note de Frais</span>
+                    <span class="btn-loader" style="display: none;">⏳ Traitement...</span>
+                </button>
+            </div>
+        </form>
+
+        <!-- Modal de confirmation -->
+        <div id="successModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h2>✅ Note de frais soumise avec succès !</h2>
+                <p>Votre note de frais a été enregistrée et vous recevrez un email de confirmation.</p>
+                <button onclick="closeModal()" class="modal-btn">Fermer</button>
+            </div>
+        </div>
+
+        <!-- Modal d'erreur -->
+        <div id="errorModal" class="modal" style="display: none;">
+            <div class="modal-content error">
+                <h2>❌ Erreur lors de la soumission</h2>
+                <p id="errorMessage">Une erreur est survenue. Veuillez réessayer.</p>
+                <button onclick="closeModal()" class="modal-btn">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
